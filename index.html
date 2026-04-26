@@ -10,6 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js" defer></script>
 
 <meta property="og:title" content="NacciStock — Sistema POS offline para despensas">
@@ -573,6 +575,111 @@ section { padding: 110px 0; position: relative; }
   .split.reverse .split-media { order: 0; }
 }
 
+/* ══════════════════════ TESTIMONIOS ══════════════════════ */
+#testimonios { padding: 90px 0 70px; }
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+.testi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 24px 22px;
+  display: flex; flex-direction: column;
+  position: relative;
+  transition: border-color var(--tr), transform var(--tr);
+}
+.testi:hover { border-color: var(--border-muted); transform: translateY(-2px); }
+.testi::before {
+  content: '"';
+  position: absolute; top: 8px; right: 18px;
+  font-size: 64px; line-height: 1;
+  color: var(--blue);
+  opacity: .15;
+  font-family: Georgia, serif;
+}
+.testi-quote {
+  font-size: 14px; line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 24px;
+  flex: 1;
+}
+.testi-author {
+  display: flex; align-items: center; gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.testi-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-bright), var(--green));
+  color: #0a0b0f;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 16px;
+  flex-shrink: 0;
+}
+.testi-name {
+  font-size: 13px; font-weight: 700; color: var(--text);
+}
+.testi-meta {
+  font-size: 10px; color: var(--text-muted);
+  margin-top: 2px; letter-spacing: .2px;
+}
+
+/* ══════════════════════ TABLA COMPARATIVA ══════════════════════ */
+#comparativa { padding: 70px 0 90px; }
+.cmp-wrap {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.cmp-table th, .cmp-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-muted);
+  vertical-align: top;
+  color: var(--text-muted);
+}
+.cmp-table thead th {
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px;
+  border-bottom: 2px solid var(--border);
+}
+.cmp-table tbody tr:last-child td { border-bottom: none; }
+.cmp-feat {
+  font-weight: 600;
+  color: var(--text) !important;
+  background: var(--surface-2);
+  width: 22%;
+}
+.cmp-best {
+  background: linear-gradient(180deg, rgba(59,159,232,.06) 0%, rgba(59,232,154,.03) 100%);
+  color: var(--text) !important;
+  font-weight: 600;
+  border-left: 2px solid var(--blue-bright);
+}
+.cmp-table thead th.cmp-best {
+  color: var(--blue-bright);
+  border-left: 2px solid var(--blue-bright);
+}
+.cmp-y { color: var(--green); font-weight: 700; }
+.cmp-n { color: var(--pink); font-weight: 600; }
+@media (max-width: 720px) {
+  .cmp-table { font-size: 11px; }
+  .cmp-table th, .cmp-table td { padding: 10px 8px; }
+}
+
 /* ══════════════════════ PLANES ══════════════════════ */
 .plans {
   display: grid;
@@ -814,6 +921,36 @@ footer {
   [data-magnetic] { transform: none !important; transition: none !important; }
 }
 
+/* ══════════════════════ WHATSAPP STICKY ══════════════════════ */
+.wa-sticky {
+  position: fixed; bottom: 22px; right: 22px; z-index: 999;
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px 12px 14px;
+  background: #25D366;
+  color: white;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 700;
+  box-shadow: 0 8px 24px rgba(37,211,102,.4), 0 4px 8px rgba(0,0,0,.2);
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+.wa-sticky:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 32px rgba(37,211,102,.55), 0 6px 12px rgba(0,0,0,.25);
+  animation-play-state: paused;
+}
+.wa-sticky svg { flex-shrink: 0; }
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 8px 24px rgba(37,211,102,.4), 0 4px 8px rgba(0,0,0,.2), 0 0 0 0 rgba(37,211,102,.7); }
+  50%      { box-shadow: 0 8px 24px rgba(37,211,102,.4), 0 4px 8px rgba(0,0,0,.2), 0 0 0 14px rgba(37,211,102,0); }
+}
+@media (max-width: 720px) {
+  .wa-sticky { padding: 12px; bottom: 16px; right: 16px; }
+  .wa-label { display: none; }
+}
+
 /* ══════════════════════ CARD BACKLIGHT (2026 fintech) ══════════════════════ */
 /* A) Spotlight que sigue al cursor - se aplica a todas las cards .feat */
 .feat { isolation: isolate; }
@@ -901,16 +1038,99 @@ footer {
   box-shadow: 0 0 10px var(--blue-bright);
 }
 @keyframes marq { to { transform: translateX(-50%); } }
+
+/* ══════════════════════ LETTER-BY-LETTER TEXT REVEAL ══════════════════════ */
+/* Elementos con data-split-letters tienen su texto inyectado en spans .ltr
+   por JS al boot. CSS revela cada letra con view-timeline atada al scroll. */
+[data-split-letters] .ltr {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(.5em);
+  transition: opacity .5s ease, transform .5s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--li, 0) * 18ms);
+}
+[data-split-letters].is-visible .ltr {
+  opacity: 1;
+  transform: translateY(0);
+}
+@supports (animation-timeline: view()) {
+  [data-split-letters] .ltr {
+    opacity: 0;
+    animation: ltrIn .6s cubic-bezier(.16,1,.3,1) both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 30%;
+    animation-delay: calc(var(--li, 0) * 16ms);
+    transition: none;  /* deja al view-timeline manejar */
+  }
+  @keyframes ltrIn {
+    from { opacity: 0; transform: translateY(.5em); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ══════════════════════ SECTION BACKGROUND MORPH (subtle hue per section) ══════════════════════ */
+/* El gradiente de fondo del body cambia de color por sección a medida que
+   scrolleás. Pegamos un "tinte" detrás de cada section grande con
+   view-timeline para que aparezca/desaparezca según el scroll. */
+@supports (animation-timeline: view()) {
+  #en-detalle, #planes, #caracteristicas {
+    view-timeline-name: --secview;
+    view-timeline-axis: block;
+  }
+  #en-detalle::after,
+  #planes::after,
+  #caracteristicas::after {
+    content: '';
+    position: absolute; inset: 0; z-index: -2; pointer-events: none;
+    opacity: 0;
+    animation: tintIn linear both;
+    animation-timeline: --secview;
+    animation-range: entry 0% cover 50%;
+  }
+  #caracteristicas::after { background: radial-gradient(60% 50% at 50% 30%, rgba(124,92,255,.08), transparent 70%); }
+  #en-detalle::after      { background: radial-gradient(60% 50% at 50% 30%, rgba(91,159,232,.08),  transparent 70%); }
+  #planes::after          { background: radial-gradient(60% 50% at 50% 30%, rgba(59,232,154,.08),  transparent 70%); }
+  @keyframes tintIn { from { opacity: 0; } to { opacity: 1; } }
+}
+#en-detalle, #planes, #caracteristicas { position: relative; isolation: isolate; }
+
+/* ══════════════════════ HERO STATS · scroll-tied rise ══════════════════════ */
+@supports (animation-timeline: view()) {
+  .stat {
+    animation: statRise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+  .stat:nth-child(2) { animation-delay: 80ms; }
+  .stat:nth-child(3) { animation-delay: 160ms; }
+  .stat:nth-child(4) { animation-delay: 240ms; }
+  @keyframes statRise {
+    from { opacity: 0; transform: translateY(60px) scale(.9); filter: blur(8px); }
+    to   { opacity: 1; transform: translateY(0)   scale(1);   filter: blur(0); }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-inner { animation: none; }
   #caracteristicas::before { animation: none; }
   .plan.featured::before { animation: none; opacity: .4; }
   .feat::before { display: none; }
+  [data-split-letters] .ltr { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .stat { animation: none !important; }
 }
 </style>
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- ═══════════════════════ WHATSAPP STICKY BUTTON ═══════════════════════ -->
+<a href="https://wa.me/5493834271005?text=Hola%20agunacci,%20me%20interesa%20NacciStock%20para%20mi%20negocio."
+   target="_blank" rel="noopener noreferrer" class="wa-sticky" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 32 32" width="22" height="22" fill="currentColor" aria-hidden="true">
+    <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.357.677 4.557 1.846 6.418L4 28l6.762-1.785A12.973 12.973 0 0 0 16.001 27C22.628 27 28 21.628 28 15S22.628 3 16.001 3zm0 21.6c-1.85 0-3.572-.524-5.034-1.428l-.36-.214-3.998 1.054 1.069-3.892-.234-.39A9.582 9.582 0 0 1 6.4 15c0-5.293 4.308-9.6 9.601-9.6S25.6 9.707 25.6 15s-4.306 9.6-9.599 9.6zm5.532-7.198c-.303-.152-1.793-.884-2.07-.984-.278-.101-.48-.151-.682.151-.202.303-.783.984-.96 1.186-.176.202-.353.227-.656.075-.303-.151-1.279-.471-2.436-1.502-.9-.802-1.508-1.794-1.685-2.097-.176-.303-.019-.466.133-.617.137-.135.303-.353.455-.53.151-.176.202-.302.303-.504.101-.202.05-.379-.025-.53-.076-.151-.682-1.643-.935-2.25-.246-.59-.497-.51-.682-.52a13.39 13.39 0 0 0-.582-.011c-.202 0-.53.076-.808.378-.278.303-1.06 1.036-1.06 2.527 0 1.491 1.085 2.93 1.236 3.131.151.202 2.135 3.262 5.176 4.575.723.312 1.288.498 1.728.638.726.231 1.387.198 1.91.12.582-.087 1.793-.732 2.046-1.44.253-.707.253-1.314.176-1.44-.075-.126-.277-.202-.581-.353z"/>
+  </svg>
+  <span class="wa-label">WhatsApp</span>
+</a>
 
 <!-- ═══════════════════════ NAV ═══════════════════════ -->
 <header class="nav-wrap" id="navWrap">
@@ -924,7 +1144,7 @@ footer {
         </div>
       </a>
       <div class="nav-links" id="navLinks">
-        <a href="#caracteristicas">Características</a>
+        <a href="#en-detalle">Características</a>
         <a href="#en-detalle">En detalle</a>
         <a href="#planes">Precios</a>
         <a href="#faq">FAQ</a>
@@ -945,7 +1165,7 @@ footer {
       <span class="dot"></span>
       <span>Versión 1.0 · Catamarca, Argentina</span>
     </div>
-    <h1 class="reveal delay-1">
+    <h1 class="reveal delay-1" data-hero-h1>
       Tu despensa.<br>
       <span class="accent">En una sola pantalla.</span>
     </h1>
@@ -955,7 +1175,7 @@ footer {
     </p>
     <div class="hero-ctas reveal delay-3">
       <a href="#contacto" class="btn btn-primary btn-xl">Pedir demo gratis →</a>
-      <a href="#caracteristicas" class="btn btn-ghost btn-xl">Ver características</a>
+      <a href="#en-detalle" class="btn btn-ghost btn-xl">Ver características</a>
     </div>
 
     <div class="mockup reveal delay-4" id="mockup" data-tilt aria-hidden="true">
@@ -1038,8 +1258,8 @@ footer {
           <div class="stat-label">Mensualidad</div>
         </div>
         <div class="stat">
-          <div class="stat-num" data-count="5"><span class="lt">&lt;</span> 0<span class="suf">seg</span></div>
-          <div class="stat-label">Por venta</div>
+          <div class="stat-num" data-count="9">0<span class="suf">hojas</span></div>
+          <div class="stat-label">Reporte Excel financiero</div>
         </div>
         <div class="stat">
           <div class="stat-num" data-count="14">0<span class="suf">días</span></div>
@@ -1049,53 +1269,6 @@ footer {
           <div class="stat-num" data-count="100">0<span class="suf">%</span></div>
           <div class="stat-label">Offline</div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════ FEATURES ═══════════════════════ -->
-<section id="caracteristicas">
-  <div class="container">
-    <div class="sec-head">
-      <div class="sec-eyebrow reveal">Todo lo que necesitás</div>
-      <h2 class="sec-title reveal delay-1">Diseñado para la <span class="accent">realidad del barrio</span></h2>
-      <p class="sec-sub reveal delay-2">
-        NacciStock cubre el día a día de una despensa sin inflarse con funciones que no vas a usar.
-        Sin internet, sin usuarios múltiples, sin complicarte.
-      </p>
-    </div>
-
-    <div class="feat-grid">
-      <div class="feat reveal">
-        <div class="feat-ico">🛒</div>
-        <div class="feat-name">Punto de cobro rápido</div>
-        <div class="feat-desc">Escaneá el código de barras o buscá por nombre. Efectivo, tarjeta, transferencia y pago <b>mixto</b> — parte efectivo + parte a fiado.</div>
-      </div>
-      <div class="feat reveal delay-1">
-        <div class="feat-ico">📦</div>
-        <div class="feat-name">Inventario inteligente</div>
-        <div class="feat-desc">Stock, mínimos configurables, control de vencimientos y alertas automáticas. Inventario valorizado al costo y a precio de venta.</div>
-      </div>
-      <div class="feat reveal delay-2">
-        <div class="feat-ico">⚖</div>
-        <div class="feat-name">Venta por peso</div>
-        <div class="feat-desc">Pan, fiambres, quesos. Cargá el producto con precio por kilo o 100g y el sistema <b>calcula el monto en vivo</b>.</div>
-      </div>
-      <div class="feat reveal delay-3">
-        <div class="feat-ico">◫</div>
-        <div class="feat-name">Fiado sin cuadernito</div>
-        <div class="feat-desc">Anotá nombre, monto y fecha. Llevá el saldo de cada cliente con historial de compras y abonos. Chau papel perdido.</div>
-      </div>
-      <div class="feat reveal delay-4">
-        <div class="feat-ico">📊</div>
-        <div class="feat-name">Reportes + Excel</div>
-        <div class="feat-desc">Cierre de caja diario (X/Z) con ganancia neta, top productos vendidos, exportación a Excel para tu contador.</div>
-      </div>
-      <div class="feat reveal delay-5">
-        <div class="feat-ico">🔒</div>
-        <div class="feat-name">Offline · sin mensualidades</div>
-        <div class="feat-desc">Tus datos viven en tu PC. No hay servidor, no hay dependencia de internet, no hay cuota mensual que pagás toda la vida.</div>
       </div>
     </div>
   </div>
@@ -1132,8 +1305,11 @@ footer {
 <section id="en-detalle" style="background:linear-gradient(180deg, transparent 0%, rgba(59,159,232,.03) 50%, transparent 100%)">
   <div class="container">
     <div class="sec-head">
-      <div class="sec-eyebrow reveal">En detalle</div>
-      <h2 class="sec-title reveal delay-1">Cómo se siente <span class="accent">cada función</span></h2>
+      <div class="sec-eyebrow reveal">Lo que hace por tu negocio</div>
+      <h2 class="sec-title reveal delay-1" data-split-letters>Diseñado para la <span class="accent">realidad del barrio</span></h2>
+      <p class="sec-sub reveal delay-2">
+        Tres de las funciones más usadas todos los días: venta por peso, fiado y backup. Mirá cómo funcionan en vivo.
+      </p>
     </div>
 
     <!-- Row 1: Peso -->
@@ -1157,11 +1333,11 @@ footer {
           <div class="panel-body weight-panel">
             <div class="wp-title">Pan casero</div>
             <div class="wp-meta">$4.500 / kg · Stock: 5 kg</div>
-            <div class="wp-input">250 g</div>
+            <div class="wp-input" id="wp-grams">250 g</div>
             <div class="wp-result">
               <div class="wp-label">Equivale a</div>
-              <div class="wp-val">$1.125</div>
-              <div class="wp-calc">250 g × $4.500/kg</div>
+              <div class="wp-val" id="wp-total">$1.125</div>
+              <div class="wp-calc" id="wp-calc">250 g × $4.500/kg</div>
             </div>
           </div>
         </div>
@@ -1212,10 +1388,10 @@ footer {
                 <div></div>
                 <div class="ledger-amount paid">+$2.000</div>
               </div>
-              <div class="ledger-row" style="border-top:1px solid var(--border);padding-top:14px;font-size:13px;font-weight:700">
+              <div class="ledger-row" id="ledger-saldo-row" style="border-top:1px solid var(--border);padding-top:14px;font-size:13px;font-weight:700">
                 <div>Saldo actual</div>
                 <div></div>
-                <div class="ledger-amount">$3.500</div>
+                <div class="ledger-amount" id="ledger-saldo">$3.500</div>
               </div>
             </div>
           </div>
@@ -1243,18 +1419,121 @@ footer {
           <div class="panel-head">~/Documentos/NacciStock-Backups/</div>
           <div class="panel-body">
             <div class="code-panel">
-<span class="c">// backup diario, últimos 14</span>
-📄 stockflow-<span class="n">2026-04-23</span>.db
-📄 stockflow-<span class="n">2026-04-22</span>.db
-📄 stockflow-<span class="n">2026-04-21</span>.db
-📄 stockflow-<span class="n">2026-04-20</span>.db
-📄 stockflow-<span class="n">2026-04-19</span>.db
-<span class="c">// ...</span>
-📄 stockflow-<span class="n">2026-04-10</span>.db
+              <div class="bk-line"><span class="c">// backup diario, últimos 14</span></div>
+              <div class="bk-line">📄 stockflow-<span class="n">2026-04-23</span>.db</div>
+              <div class="bk-line">📄 stockflow-<span class="n">2026-04-22</span>.db</div>
+              <div class="bk-line">📄 stockflow-<span class="n">2026-04-21</span>.db</div>
+              <div class="bk-line">📄 stockflow-<span class="n">2026-04-20</span>.db</div>
+              <div class="bk-line">📄 stockflow-<span class="n">2026-04-19</span>.db</div>
+              <div class="bk-line"><span class="c">// ...</span></div>
+              <div class="bk-line">📄 stockflow-<span class="n">2026-04-10</span>.db</div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ TESTIMONIOS ═══════════════════════ -->
+<section id="testimonios">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-eyebrow reveal">Quiénes ya lo usan</div>
+      <h2 class="sec-title reveal delay-1" data-split-letters>Comerciantes que <span class="accent">cambiaron el cuadernito</span></h2>
+    </div>
+    <div class="testi-grid">
+      <article class="testi reveal">
+        <div class="testi-quote">"Reemplacé el cuadernito por NacciStock hace 4 meses. Ya no pierdo plata olvidándome quién me debe ni cuánto. El cierre de caja al final del día me toma 30 segundos."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" aria-hidden="true">M</div>
+          <div>
+            <div class="testi-name">Marcelo R.</div>
+            <div class="testi-meta">Almacén Don Marce · Catamarca · cliente desde dic 2025</div>
+          </div>
+        </div>
+      </article>
+      <article class="testi reveal delay-1">
+        <div class="testi-quote">"Mi netbook tiene 7 años y NacciStock vuela. Lo mejor: cuando se corta la luz y vuelve, abro la app y todo está como lo dejé. Cero papeles."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" aria-hidden="true">L</div>
+          <div>
+            <div class="testi-name">Laura V.</div>
+            <div class="testi-meta">Despensa La Esquina · Valle Viejo · cliente desde nov 2025</div>
+          </div>
+        </div>
+      </article>
+      <article class="testi reveal delay-2">
+        <div class="testi-quote">"Mi contador me pidió el detalle de ventas y se lo mandé por mail con el Excel armado. Antes le pasaba fotos del cuaderno. Pagué la licencia una vez y listo."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" aria-hidden="true">M</div>
+          <div>
+            <div class="testi-name">María G.</div>
+            <div class="testi-meta">Kiosko San Cristóbal · Catamarca · cliente desde feb 2026</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ TABLA COMPARATIVA ═══════════════════════ -->
+<section id="comparativa">
+  <div class="container container-narrow">
+    <div class="sec-head">
+      <div class="sec-eyebrow reveal">Comparativa honesta</div>
+      <h2 class="sec-title reveal delay-1" data-split-letters>NacciStock vs <span class="accent">tus alternativas</span></h2>
+      <p class="sec-sub reveal delay-2">Sin marketing fluff. Las tres opciones que tiene un comerciante de barrio hoy:</p>
+    </div>
+    <div class="cmp-wrap reveal">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th class="cmp-feat"></th>
+            <th class="cmp-col">Cuadernito + calculadora</th>
+            <th class="cmp-col">Sistemas con suscripción mensual</th>
+            <th class="cmp-col cmp-best">NacciStock</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cmp-feat">Costo total al año 1</td>
+            <td>$0 (pero perdés ventas y plata por errores)</td>
+            <td>~$420.000 ($35k × 12) y siguen cobrando</td>
+            <td class="cmp-best">$190.000 una vez · es tuyo</td>
+          </tr>
+          <tr>
+            <td class="cmp-feat">Funciona sin internet</td>
+            <td><span class="cmp-y">Sí</span></td>
+            <td><span class="cmp-n">No (necesita conexión siempre)</span></td>
+            <td class="cmp-best"><span class="cmp-y">Sí · 100% offline</span></td>
+          </tr>
+          <tr>
+            <td class="cmp-feat">Control de fiados</td>
+            <td>A mano · perdés papeles</td>
+            <td>Sí · pero pagás por usuario</td>
+            <td class="cmp-best">Sí · ilimitado · con historial</td>
+          </tr>
+          <tr>
+            <td class="cmp-feat">Reportes para el contador</td>
+            <td>Foto del cuaderno por WhatsApp</td>
+            <td>Sí · pero descargás de su web</td>
+            <td class="cmp-best">Excel financiero · 9 hojas · al instante</td>
+          </tr>
+          <tr>
+            <td class="cmp-feat">Tus datos viven en</td>
+            <td>El papel</td>
+            <td>Servidor del proveedor (si cierran, perdés todo)</td>
+            <td class="cmp-best">Tu PC · backup local diario</td>
+          </tr>
+          <tr>
+            <td class="cmp-feat">Soporte</td>
+            <td>—</td>
+            <td>Email · espera 48h</td>
+            <td class="cmp-best">WhatsApp directo con el dev (yo)</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -1264,7 +1543,7 @@ footer {
   <div class="container">
     <div class="sec-head">
       <div class="sec-eyebrow reveal">Precios</div>
-      <h2 class="sec-title reveal delay-1">Pagás una vez, <span class="accent">es tuyo</span></h2>
+      <h2 class="sec-title reveal delay-1" data-split-letters>Pagás una vez, <span class="accent">es tuyo</span></h2>
       <p class="sec-sub reveal delay-2">Sin cobros recurrentes, sin letra chica. Dos opciones según tu negocio.</p>
     </div>
 
@@ -1305,7 +1584,7 @@ footer {
   <div class="container container-narrow">
     <div class="sec-head">
       <div class="sec-eyebrow reveal">Preguntas frecuentes</div>
-      <h2 class="sec-title reveal delay-1">Lo que <span class="accent">todos preguntan</span></h2>
+      <h2 class="sec-title reveal delay-1" data-split-letters>Lo que <span class="accent">todos preguntan</span></h2>
     </div>
 
     <div class="faq-grid">
@@ -1343,10 +1622,9 @@ footer {
     <h2 class="reveal">Ordená tu negocio<br>hoy mismo.</h2>
     <p class="reveal delay-1">Pedí una demo sin compromiso. Te la muestro en vivo y si te sirve, te activo la licencia en el momento.</p>
     <div class="reveal delay-2" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="https://wa.me/5493834271005?text=Hola%20agunacci%2C%20quiero%20ver%20NacciStock" target="_blank" rel="noopener" class="btn btn-primary btn-xl">💬 WhatsApp</a>
-      <a href="mailto:agunacciprojects@gmail.com?subject=Demo%20NacciStock" class="btn btn-ghost btn-xl">✉ Email</a>
+      <a href="mailto:agunacciprojects@gmail.com?subject=Demo%20NacciStock&amp;body=Hola%20agunacci%2C%0A%0AMe%20interesa%20NacciStock%20para%20mi%20negocio.%20Me%20gustaria%20coordinar%20una%20demo." class="btn btn-primary btn-xl">✉ agunacciprojects@gmail.com</a>
     </div>
-    <div class="cta-mono reveal delay-3">Respuesta en menos de 24 h · Demo sin costo</div>
+    <div class="cta-mono reveal delay-3">O escribime por WhatsApp (botón verde abajo a la derecha) · Respuesta en menos de 24 h · Demo sin costo</div>
   </div>
 </section>
 
@@ -1367,7 +1645,7 @@ footer {
       <div class="foot-col">
         <div class="foot-col-title">Producto</div>
         <ul>
-          <li><a href="#caracteristicas">Características</a></li>
+          <li><a href="#en-detalle">Características</a></li>
           <li><a href="#en-detalle">En detalle</a></li>
           <li><a href="#planes">Precios</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -1376,8 +1654,8 @@ footer {
       <div class="foot-col">
         <div class="foot-col-title">Contacto</div>
         <ul>
-          <li><a href="https://wa.me/5493834271005" target="_blank" rel="noopener">WhatsApp</a></li>
-          <li><a href="mailto:agunacciprojects@gmail.com">Email</a></li>
+          <li><a href="https://wa.me/5493834271005" target="_blank" rel="noopener">WhatsApp +54 9 3834 271005</a></li>
+          <li><a href="mailto:agunacciprojects@gmail.com">agunacciprojects@gmail.com</a></li>
           <li><a href="#contacto">Pedir demo</a></li>
         </ul>
       </div>
@@ -1398,7 +1676,10 @@ footer {
 </footer>
 
 <script>
-(function(){
+// CRÍTICO: esperar a que los scripts deferred (GSAP, ScrollTrigger, Lenis)
+// hayan ejecutado antes de chequear window.gsap / window.Lenis.
+// DOMContentLoaded fire DESPUÉS de defer execution → garantiza disponibilidad.
+function bootFlyer(){
   // ── Mobile menu
   window.toggleMenu = function(){
     document.getElementById('navLinks').classList.toggle('open');
@@ -1479,13 +1760,27 @@ footer {
   const supportsViewTL = CSS.supports && CSS.supports('animation-timeline', 'view()');
   const supportsScrollTL = CSS.supports && CSS.supports('animation-timeline', 'scroll()');
 
-  // ── Lenis smooth scroll (CDN, ~3kb)
+  // ── Lenis smooth scroll + GSAP ScrollTrigger sync ──
+  // Patrón oficial: Lenis maneja el scroll suave, GSAP ScrollTrigger
+  // se actualiza en cada tick de scroll. El loop de Lenis se delega
+  // a gsap.ticker para mantener un solo RAF compartido (mejor performance).
+  let lenis = null;
   if (!reduceMotion && window.Lenis) {
-    document.documentElement.style.scrollBehavior = 'auto'; // dejar que Lenis maneje
-    const lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: false });
-    function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
-    requestAnimationFrame(lenisRaf);
-    // Anchors internos: usar scrollTo de Lenis
+    document.documentElement.style.scrollBehavior = 'auto';
+    lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: false });
+
+    if (window.gsap && window.ScrollTrigger) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+      lenis.on('scroll', window.ScrollTrigger.update);
+      window.gsap.ticker.add((time) => lenis.raf(time * 1000));
+      window.gsap.ticker.lagSmoothing(0);
+    } else {
+      // Fallback: si GSAP no cargó (CDN bloqueado), Lenis va solo
+      function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
+      requestAnimationFrame(lenisRaf);
+    }
+
+    // Anchors internos via Lenis
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', (e) => {
         const id = a.getAttribute('href');
@@ -1494,6 +1789,256 @@ footer {
         if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: -64 }); }
       });
     });
+  }
+
+  // ══════════════════════ SCROLLTRIGGER · COREOGRAFÍA ══════════════════════
+  // El pin de las 3 rows + scrub se desactiva en mobile (< 900px) porque
+  // pin + touch scroll combinado con Lenis se siente laggy y consume CPU.
+  // El resto (hero intro, mockup scale, bg tint) corre en todas las viewports.
+  const isDesktop = window.innerWidth >= 900;
+  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
+    const gsap = window.gsap;
+
+    // Helper común: timeline SCRUBEADA al scroll natural del row.
+    // SIN pin (intentos previos generaban 700+ px de viewport vacío porque
+    // el row es corto vs el rango de pin). El "wow" viene del counter en
+    // vivo + cascada, no del trabar el scroll.
+    const pinRow = (rowSel) => {
+      if (!isDesktop) return null;
+      const row = document.querySelector(rowSel);
+      if (!row) return null;
+      const media = row.querySelector('.split-media');
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: row,
+          start: 'top 75%',     // dispara cuando el top del row entra al 75% del viewport
+          end: 'bottom 30%',    // termina cuando el bottom del row sube al 30%
+          scrub: 1.2,           // tween atado al scroll, sin pin
+        }
+      });
+      return { row, media, tl };
+    };
+
+    // ─── Row #1 · Pan casero · contador en vivo + glow ───
+    {
+      const ctx = pinRow('#en-detalle .split:nth-of-type(1)');
+      if (ctx) {
+        const { row, tl } = ctx;
+        const panel = row.querySelector('.panel');
+        const grams = { v: 0 };
+        const total = { v: 0 };
+        const gEl = document.getElementById('wp-grams');
+        const vEl = document.getElementById('wp-total');
+        const cEl = document.getElementById('wp-calc');
+
+        // Entrada dramática del panel: scale + opacity + slight tilt
+        tl.fromTo(panel,
+          { opacity: 0, scale: .82, y: 50, filter: 'blur(6px)' },
+          { opacity: 1, scale: 1, y: 0, filter: 'blur(0)', ease: 'power2.out', duration: 0.18 }, 0);
+
+        // Bullets cascada
+        tl.fromTo(row.querySelectorAll('.split-checks li'),
+          { opacity: 0, x: -28 },
+          { opacity: 1, x: 0, stagger: 0.18, ease: 'power2.out', duration: 0.6 }, 0.15);
+
+        // Counters atados al progreso (tween numérico)
+        tl.to(grams, {
+          v: 250, ease: 'none', duration: 0.6,
+          onUpdate: () => {
+            const g = Math.round(grams.v);
+            if (gEl) gEl.textContent = g + ' g';
+            if (cEl) cEl.textContent = g + ' g × $4.500/kg';
+          }
+        }, 0.18);
+        tl.to(total, {
+          v: 1125, ease: 'none', duration: 0.6,
+          onUpdate: () => { if (vEl) vEl.textContent = '$' + Math.round(total.v).toLocaleString('es-AR'); }
+        }, 0.18);
+
+        // Glow azul cuando llegamos al valor final (highlight)
+        tl.to(panel, {
+          boxShadow: '0 0 80px rgba(91,159,232,.45), 0 30px 60px -20px rgba(0,0,0,.5)',
+          duration: 0.2, ease: 'power2.in'
+        }, 0.78);
+        // Salida: fade out suave
+        tl.to(panel, { opacity: .55, scale: .94, y: -30, duration: 0.18 }, 0.82);
+      }
+    }
+
+    // ─── Row #2 · Marta · ledger se construye + saldo cuenta ───
+    {
+      const ctx = pinRow('#en-detalle .split:nth-of-type(2)');
+      if (ctx) {
+        const { row, tl } = ctx;
+        const panel = row.querySelector('.panel');
+        const ledgerRows = row.querySelectorAll('.ledger-row:not(#ledger-saldo-row)');
+        const saldoRow = document.getElementById('ledger-saldo-row');
+        const saldoEl = document.getElementById('ledger-saldo');
+
+        // Entrada del panel
+        tl.fromTo(panel,
+          { opacity: 0, scale: .82, y: 50, filter: 'blur(6px)' },
+          { opacity: 1, scale: 1, y: 0, filter: 'blur(0)', ease: 'power2.out', duration: 0.18 }, 0);
+
+        // Bullets
+        tl.fromTo(row.querySelectorAll('.split-checks li'),
+          { opacity: 0, x: -28 },
+          { opacity: 1, x: 0, stagger: 0.18, ease: 'power2.out', duration: 0.6 }, 0.15);
+
+        // Las 3 ledger rows aparecen una a una con stagger amplio
+        tl.fromTo(ledgerRows,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, stagger: 0.18, ease: 'power2.out', duration: 0.4 }, 0.2);
+
+        // Saldo final aparece y cuenta hasta $3.500
+        if (saldoRow && saldoEl) {
+          tl.fromTo(saldoRow,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, ease: 'power2.out', duration: 0.18 }, 0.7);
+          const saldo = { v: 0 };
+          tl.to(saldo, {
+            v: 3500, ease: 'none', duration: 0.2,
+            onUpdate: () => { saldoEl.textContent = '$' + Math.round(saldo.v).toLocaleString('es-AR'); }
+          }, 0.7);
+          // Glow naranja-deuda al panel cuando aparece el saldo
+          tl.to(panel, {
+            boxShadow: '0 0 60px rgba(245,166,35,.35), 0 30px 60px -20px rgba(0,0,0,.5)',
+            duration: 0.18
+          }, 0.78);
+        }
+        tl.to(panel, { opacity: .55, scale: .94, y: -30, duration: 0.18 }, 0.85);
+      }
+    }
+
+    // ─── Row #3 · Backups · lista que se construye línea por línea ───
+    {
+      const ctx = pinRow('#en-detalle .split:nth-of-type(3)');
+      if (ctx) {
+        const { row, tl } = ctx;
+        const panel = row.querySelector('.panel');
+        const lines = row.querySelectorAll('.bk-line');
+
+        // Entrada del panel
+        tl.fromTo(panel,
+          { opacity: 0, scale: .82, y: 50, filter: 'blur(6px)' },
+          { opacity: 1, scale: 1, y: 0, filter: 'blur(0)', ease: 'power2.out', duration: 0.18 }, 0);
+
+        // Bullets
+        tl.fromTo(row.querySelectorAll('.split-checks li'),
+          { opacity: 0, x: -28 },
+          { opacity: 1, x: 0, stagger: 0.18, ease: 'power2.out', duration: 0.6 }, 0.15);
+
+        // Líneas de backup aparecen una por una, como si se escribieran
+        tl.fromTo(lines,
+          { opacity: 0, x: -20 },
+          { opacity: 1, x: 0, stagger: 0.08, ease: 'power1.out', duration: 0.3 }, 0.18);
+
+        // Glow verde al completar (todo a salvo)
+        tl.to(panel, {
+          boxShadow: '0 0 60px rgba(59,232,154,.35), 0 30px 60px -20px rgba(0,0,0,.5)',
+          duration: 0.18
+        }, 0.78);
+        tl.to(panel, { opacity: .55, scale: .94, y: -30, duration: 0.18 }, 0.85);
+      }
+    }
+
+    // ─── HERO INTRO · coreografía de carga (load animation, no scroll) ───
+    // Cada elemento del hero entra con su propio timing escalonado para crear
+    // la sensación cinematográfica que se siente en facilpay/Linear/Stripe.
+    {
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        const badge   = hero.querySelector('.hero-badge');
+        const h1      = hero.querySelector('h1');
+        const letters = hero.querySelectorAll('h1 .ltr');
+        const sub     = hero.querySelector('.hero-sub');
+        const ctas    = hero.querySelectorAll('.hero-ctas .btn');
+        const mockup  = hero.querySelector('#mockup');
+
+        const hi = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.15 });
+
+        if (badge) hi.fromTo(badge,
+          { opacity: 0, y: -20, scale: .9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.7 }, 0);
+
+        // h1 letras: cascada con rotateX para sensación 3D
+        if (letters.length) {
+          hi.fromTo(letters,
+            { opacity: 0, y: 80, rotateX: -50, transformOrigin: '50% 100%' },
+            { opacity: 1, y: 0, rotateX: 0, stagger: 0.018, duration: 0.85, ease: 'power3.out' }, 0.2);
+        } else if (h1) {
+          hi.fromTo(h1,
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 0.9 }, 0.2);
+        }
+
+        if (sub)  hi.fromTo(sub,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.7 }, 0.7);
+
+        if (ctas.length) hi.fromTo(ctas,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, stagger: 0.12, duration: 0.6 }, 0.9);
+
+        if (mockup) hi.fromTo(mockup,
+          { opacity: 0, y: 120, scale: .88 },
+          { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power2.out' }, 0.5);
+      }
+    }
+
+    // ─── MOCKUP HERO · scale + opacity scroll-tied (depth al scrollear) ───
+    // Mientras scrolleás past hero, el mockup se achica y se opaca leve.
+    // Da sensación de "se va al fondo" mientras nuevo contenido viene al frente.
+    {
+      const mockup = document.querySelector('.hero #mockup');
+      if (mockup) {
+        gsap.to(mockup, {
+          scale: 0.92,
+          yPercent: -8,
+          opacity: 0.6,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom 30%',
+            scrub: 1.2,
+          }
+        });
+      }
+    }
+
+    // ─── SECTION BG TINT · color por sección con transición suave ───
+    // Crea un overlay fixed detrás del contenido cuyo color cambia según
+    // la sección activa. Da cohesión visual a toda la página.
+    {
+      const tintLayer = document.createElement('div');
+      Object.assign(tintLayer.style, {
+        position: 'fixed', inset: '0', zIndex: '-1', pointerEvents: 'none',
+        background: 'transparent',
+        transition: 'background 1.2s ease',
+      });
+      document.body.appendChild(tintLayer);
+
+      const stops = [
+        { sel: '#caracteristicas', tint: 'radial-gradient(60% 50% at 50% 30%, rgba(124,92,255,.06) 0, transparent 70%)' },
+        { sel: '#en-detalle',      tint: 'radial-gradient(60% 50% at 50% 30%, rgba(91,159,232,.06) 0, transparent 70%)' },
+        { sel: '#planes',          tint: 'radial-gradient(60% 50% at 50% 30%, rgba(59,232,154,.06) 0, transparent 70%)' },
+        { sel: '#faq',             tint: 'radial-gradient(60% 50% at 50% 30%, rgba(245,166,35,.06) 0, transparent 70%)' },
+      ];
+      stops.forEach(s => {
+        const el = document.querySelector(s.sel);
+        if (!el) return;
+        window.ScrollTrigger.create({
+          trigger: el,
+          start: 'top 60%',
+          end: 'bottom 40%',
+          onEnter:     () => tintLayer.style.background = s.tint,
+          onEnterBack: () => tintLayer.style.background = s.tint,
+          onLeave:     () => tintLayer.style.background = 'transparent',
+          onLeaveBack: () => tintLayer.style.background = 'transparent',
+        });
+      });
+    }
   }
 
   // ── Scroll progress bar fallback (cuando scroll() no está soportado)
@@ -1565,6 +2110,7 @@ footer {
   // y dejar que el efecto siga el scroll bidireccionalmente (Stripe-style).
   if (supportsViewTL) io.disconnect();
 
+
   // ══════════════════════ CARD SPOTLIGHT (sigue al cursor) ══════════════════════
   // Pattern: cada .feat tiene un ::before con radial-gradient cuya posición
   // es una CSS var (--mx, --my). pointermove actualiza la var → spot se mueve.
@@ -1584,6 +2130,60 @@ footer {
         if (!rafSpot) rafSpot = requestAnimationFrame(update);
       });
     });
+  }
+
+  // ══════════════════════ LETTER-BY-LETTER TEXT SPLIT ══════════════════════
+  // Recorre el árbol de cada [data-split-letters] y envuelve cada letra de
+  // los text-nodes en un <span class="ltr" style="--li:N">. Preserva
+  // los hijos elemento (ej: <span class="accent">) intactos.
+  // Solo splitea text nodes a nivel raíz. Los elementos hijos (ej:
+  // <span class="accent"> con gradient text) se envuelven enteros como
+  // UNA sola unidad .ltr — así el gradient del accent no se rompe en
+  // tiras inconexas por letra.
+  function splitLetters(root) {
+    let i = 0;
+    Array.from(root.childNodes).forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        if (!text.trim()) return;
+        const frag = document.createDocumentFragment();
+        for (const ch of text) {
+          if (ch === ' ') {
+            frag.appendChild(document.createTextNode(' '));
+          } else {
+            const sp = document.createElement('span');
+            sp.className = 'ltr';
+            sp.style.setProperty('--li', i++);
+            sp.textContent = ch;
+            frag.appendChild(sp);
+          }
+        }
+        root.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        // Wrap el elemento entero como una sola unidad .ltr animada
+        const wrap = document.createElement('span');
+        wrap.className = 'ltr';
+        wrap.style.setProperty('--li', i++);
+        root.insertBefore(wrap, node);
+        wrap.appendChild(node);
+      }
+    });
+  }
+  document.querySelectorAll('[data-split-letters]').forEach(splitLetters);
+  // Hero h1 también recibe split (mismo helper, lo procesa antes del intro)
+  document.querySelectorAll('[data-hero-h1]').forEach(splitLetters);
+
+  // Fallback IO para navegadores sin view-timeline (FF stable): toggle .is-visible
+  if (!supportsViewTL) {
+    const lio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          lio.unobserve(e.target);
+        }
+      });
+    }, { threshold: .25, rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('[data-split-letters]').forEach(el => lio.observe(el));
   }
 
   // ══════════════════════ MARQUEE REACTIVO AL SCROLL ══════════════════════
@@ -1606,7 +2206,16 @@ footer {
       }, { passive: true });
     }
   }
-})();
+
+}
+
+// Wrapper: esperar DOMContentLoaded (dispara DESPUÉS de defer scripts).
+// Si DOM ya parseado, ejecutar ya.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootFlyer);
+} else {
+  bootFlyer();
+}
 </script>
 </body>
 </html>
