@@ -44,13 +44,21 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
+/* `overflow-x: clip` previene horizontal overflow sin crear scroll container
+   (a diferencia de `hidden`). Crítico en mobile: el marquee de 5140px de
+   ancho hacía que body.scrollWidth excediera viewport en 38px y rompía el
+   posicionamiento del WhatsApp sticky. clip soporta Chrome 90+, Edge 90+,
+   Safari 15.4+, Firefox 81+ — cobertura sobrada en 2026. */
+html, body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
 html { scroll-behavior:smooth; }
 body {
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -169,6 +177,9 @@ header.nav-wrap.scrolled {
     border-top: 1px solid var(--border-muted);
     padding: 22px 24px;
   }
+  /* CTA primario más compacto en mobile para no competir con el logo */
+  .nav-actions .btn-primary { padding: 9px 14px; font-size: 13px; }
+  .nav-actions .btn-primary.btn-xl { padding: 9px 14px; font-size: 13px; }
 }
 
 /* ══════════════════════ HERO ══════════════════════ */
@@ -206,10 +217,13 @@ header.nav-wrap.scrolled {
   50%     { opacity: .5; }
 }
 .hero h1 {
-  font-size: clamp(44px, 7.5vw, 92px);
+  /* min reducido de 44px a 38px para más respiro en iPhone SE 375px wide.
+     A 7.5vw, en 375px da ~28px → clamp asegura mín 38px. En desktop sin
+     cambios (max 92px). */
+  font-size: clamp(38px, 7.5vw, 92px);
   font-weight: 800;
-  letter-spacing: -2.5px;
-  line-height: .95;
+  letter-spacing: -2px;
+  line-height: 1;
   margin-bottom: 28px;
   background: linear-gradient(180deg, #ffffff 20%, #a8b4c0 90%);
   -webkit-background-clip: text;
@@ -1011,7 +1025,14 @@ footer {
 
 /* D) Marquee infinito con velocidad reactiva al scroll */
 .marquee {
-  overflow: hidden;
+  /* Defensa redundante contra horizontal overflow en mobile.
+     El inner mide ~5140px; con clip+max-width+contain:paint nos aseguramos
+     que no contribuya al body.scrollWidth bajo ninguna circunstancia.
+     `contain: paint` aísla el subtree del cálculo de layout de ancestros. */
+  overflow: clip;
+  max-width: 100vw;
+  width: 100%;
+  contain: paint;
   border-top: 1px solid var(--border-muted);
   border-bottom: 1px solid var(--border-muted);
   padding: 22px 0;
